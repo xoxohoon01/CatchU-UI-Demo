@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [Header("UI References")]
     public Button gachaButton;
+    public GameObject giftBox;     // 선물 상자
     public GameObject resultPanel; // 결과물 이미지와 텍스트를 포함하는 부모 패널
     public Image resultImage;
     public TextMeshProUGUI resultText;
@@ -25,12 +26,20 @@ public class UIManager : MonoBehaviour
     public float effectDelay = 0.1f; // 결과물과 이펙트 등장 시간 차이
 
     // 애니메이터 제어를 위해 필요한 Animator 컴포넌트
+    private Animator giftBoxAnimator;
     private Animator resultPanelAnimator;
 
     void Start()
     {
         // DOTween 초기화 (만약 Start()에서 처음 사용하는 경우)
         // DG.Tweening.DOTween.Init(); // 이 부분은 보통 프로젝트 시작 시 한 번만 호출하면 됩니다.
+
+        // 결과 패널의 Animator 컴포넌트 가져오기
+        giftBoxAnimator = giftBox.GetComponent<Animator>();
+        if (giftBoxAnimator == null)
+        {
+            Debug.LogError("GiftBox에 Animator 컴포넌트가 없습니다!");
+        }
 
         // 결과 패널의 Animator 컴포넌트 가져오기
         resultPanelAnimator = resultPanel.GetComponent<Animator>();
@@ -49,6 +58,7 @@ public class UIManager : MonoBehaviour
         gachaButton.interactable = false; // 뽑기 중에는 버튼 비활성화
         resultPanel.SetActive(false); // 이전 결과 숨기기
 
+        giftBoxAnimator.SetTrigger("Openned");
         // 1. 애니메이터를 이용한 뽑기 연출 (예: 룰렛 돌아가는 애니메이션 등)
         // 여기서는 간단하게 바로 결과물 등장으로 넘어갑니다.
         // 만약 뽑기 중간 연출이 있다면 resultPanelAnimator.SetTrigger("StartGacha") 등으로 시작.
