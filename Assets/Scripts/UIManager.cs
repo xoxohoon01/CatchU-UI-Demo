@@ -6,6 +6,7 @@ using System.Collections; // Coroutine 사용
 
 public class UIManager : MonoBehaviour
 {
+    // 싱글톤
     private static UIManager instance;
     public static UIManager Instance
     {
@@ -16,6 +17,7 @@ public class UIManager : MonoBehaviour
             return instance;
         }
     }
+
     [Header("UI References")]
     public Canvas canvas;
     public Button confirmButton;
@@ -56,16 +58,17 @@ public class UIManager : MonoBehaviour
             Debug.LogError("GiftBox에 Animator 컴포넌트가 없습니다!");
         }
 
-        // 결과 패널의 Animator 컴포넌트 가져오기
+        // 결과 패널과 버튼 초기 위치 저장
         rewardPanel_originY = rewardPanel.GetComponent<RectTransform>().localPosition.y;
+        gachaButton_originY = gachaButton.GetComponent<RectTransform>().localPosition.y;
 
         // 버튼 이벤트 등록
         confirmButton.onClick.AddListener(OnConfirmButtonClick);
         gachaButton.onClick.AddListener(OnGachaButtonClick);
 
-        gachaButton_originY = gachaButton.GetComponent<RectTransform>().localPosition.y; // 버튼 초기 위치 저장
-        rewardPanel.GetComponent<RectTransform>().localPosition = new Vector3(0, 2400, 0); // 시작 시 결과 패널 위치 초기화
-        rewardPanel.SetActive(false); // 시작 시 결과 패널 숨기기
+        // 결과 패널 위치 초기화
+        rewardPanel.GetComponent<RectTransform>().localPosition = new Vector3(0, 2400, 0);
+        rewardPanel.SetActive(false);
     }
 
     // ConfirmButton 클릭 시 호출되는 콜백 메소드
@@ -98,7 +101,7 @@ public class UIManager : MonoBehaviour
         gachaButton.interactable = false; // 뽑기 중에는 버튼 비활성화
         rewardPanel.SetActive(false); // 이전 결과 숨기기
 
-        // GiftBox 애니메이션 실행
+        // GiftBox 흔들리는 애니메이션 실행
         giftBoxAnimator.SetTrigger("Openned");
     }
 
@@ -141,7 +144,7 @@ public class UIManager : MonoBehaviour
         rewardPanel.SetActive(true);
 
         // RewardPanel이 위에서 등장
-        rewardPanel.GetComponent<RectTransform>().DOLocalMove(new Vector3(0, 0, 0), 0.5f)
+        rewardPanel.GetComponent<RectTransform>().DOLocalMove(new Vector3(0, rewardPanel_originY, 0), 0.5f)
             .SetEase(Ease.InBack);
 
         // 결과 패널 아이템이 나타나는 동안 대기
