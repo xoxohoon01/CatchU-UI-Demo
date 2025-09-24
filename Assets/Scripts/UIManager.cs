@@ -102,7 +102,13 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(effectDelay); // 결과물이 조금 드러난 후 이펙트 발생
         if (effectPrefab != null)
         {
-            GameObject effectInstance = Instantiate(effectPrefab, Vector3.zero, Quaternion.identity, resultPanel.transform);
+            GameObject effectInstance = Instantiate(effectPrefab, Vector3.zero + Vector3.forward * 5.0f, Quaternion.identity, resultPanel.transform);
+            ParticleSystem effectParticleSystem = effectInstance.GetComponent<ParticleSystem>();
+            if (effectParticleSystem != null)
+            {
+                effectParticleSystem.Play();
+            }
+
             // 파티클 시스템이라면 일정 시간 후 스스로 사라지게 하거나, 스크립트에서 Destroy(effectInstance, effectLifetime); 처리
             Destroy(effectInstance, 2f); // 2초 후 이펙트 삭제
         }

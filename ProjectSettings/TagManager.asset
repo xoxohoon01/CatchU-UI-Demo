@@ -38,11 +38,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: UI Particles
-    uniqueID: 2533895619
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI Particles
+    uniqueID: 2533895619
     locked: 0
   m_RenderingLayers:
   - Default
